@@ -18,14 +18,9 @@ try {
 
     R::setAutoResolve(TRUE);        //Recommended as of version 4.2
 
-    $post = R::dispense('persons');
+    $rows = R::getAll( 'select * from persons' );
 
-    //$post->Id = $idP;
-    $post->FirstName = $fn;
-    $post->LastName = $ln;
-    $post->Age = $age;
-
-    $id = R::store($post);          //Create or Update
+    return $rows;
 }
 
 catch(Exception $ex) {
