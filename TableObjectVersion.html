@@ -1,0 +1,111 @@
+<script>
+	var persons = [];
+
+	function Person(id, fn, ln, age) {
+		this.id = id;
+		this.fn = fn;
+		this.ln = ln;
+		this.age = age;
+		return this;
+	}
+
+	function getPerson() {
+		var id = document.getElementById('id').value;
+		var fn = document.getElementById('fn').value;
+		var ln = document.getElementById('ln').value;
+		var age = document.getElementById('age').value;
+		return new Person(id,fn,ln,age);
+	}
+
+	function addStart() {
+		persons.unshift(getPerson());
+		ShowPersons();
+	}
+
+	function addEnd() {
+		persons.push(getPerson());
+		ShowPersons();
+	}
+
+	function addMid() {
+		persons.splice(persons.length / 2, 0, getPerson());
+		ShowPersons();
+	}
+
+	function delStart() {
+		persons.shift();
+		ShowPersons();
+	}
+
+	function delEnd() {
+		persons.pop();
+		ShowPersons();
+	}
+
+	function delMid() {
+		persons.splice(Math.ceil(persons.length / 2 - 1), 1);
+		ShowPersons();
+	}
+
+	function clearTable() {
+		persons = [];
+		ShowPersons();
+	}
+
+	function save() {
+		localStorage.setItem("persons", JSON.stringify(persons));
+	}
+
+	function load() {
+		persons = JSON.parse(localStorage.getItem("persons"));
+		ShowPersons();
+	}
+
+	function ShowPersons() {
+		var tableRef = document.getElementById('persons').getElementsByTagName('tbody')[0];
+		tableRef.innerHTML = "";
+	
+		persons.forEach(function(item) {
+			var tableRef = document.getElementById('persons').getElementsByTagName('tbody')[0];
+			// Insert a row in the table at the first row
+			var newRow   = tableRef.insertRow(tableRef.rows.length);
+			// Insert a cell in the row at index 0
+			var cellId  = newRow.insertCell(0);
+			var cellFn = newRow.insertCell(1);
+			var cellLn = newRow.insertCell(2);
+			var cellAge = newRow.insertCell(3);
+			// Append a text node to the cell
+			cellId.appendChild(document.createTextNode(item.id));
+			cellFn.appendChild(document.createTextNode(item.fn));
+			cellLn.appendChild(document.createTextNode(item.ln));
+			cellAge.appendChild(document.createTextNode(item.age));
+		});
+	}
+</script>
+
+id: <input type="text" id="id"><br>
+fn: <input type="text" id="fn"><br>
+ln: <input type="text" id="ln"><br>
+age: <input type="text" id="age"><br>
+<button type="button" onclick="addStart()">AddStart</button>
+<button type="button" onclick="addEnd()">AddEnd</button>
+<button type="button" onclick="addMid()">AddMid</button> <br/>
+<button type="button" onclick="delStart()">DelStart</button>
+<button type="button" onclick="delEnd()">DelEnd</button>
+<button type="button" onclick="delMid()">DelMid</button> <br/>
+<button type="button" onclick="clearTable()">Clear</button> <br/>
+<button type="button" onclick="save()">Save</button>
+<button type="button" onclick="load()">Load</button> <br/> <br/>
+
+<table id="persons" border="1">
+	<thead>
+		<tr>
+			<th>id</th>
+			<th>fn</th>
+			<th>ln</th>
+			<th>age</th>
+		</tr>
+	</thead>
+	<tbody>
+	</tbody>
+</table>​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​

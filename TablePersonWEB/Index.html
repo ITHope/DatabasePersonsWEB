@@ -1,0 +1,46 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script type="text/javascript" src="PersonsTableScript.js"> </script>
+</head>
+<body>
+    <table id="Persons" border='1'>
+        <tr id="Columns">
+            <td>Id</td>
+            <td>FirstName</td>
+            <td>LastName</td>
+            <td>Age</td>
+        </tr>
+    </table>
+
+    <p>
+        Id:<Br><input type="number" id="idp" size="20"><Br>
+        FirstName:<Br><input type="text" id="fn" size="20"><Br>
+        LastName:<Br><input type="text" id="ln" size="20"><Br>
+        Age:<Br><input type="number" id="age" size="20"><Br>
+    </p>
+
+
+    <p>
+        <button type="button" onclick="AddStart()">Add Start</button>
+        <button type="button" onclick="AddMid()">Add Mid</button>
+        <button type="button" onclick="AddEnd()">Add End</button>
+    </p>
+    <p>
+        <button type="button" onclick="DelStart()">Del Start</button>
+        <button type="button" onclick="DelMid()">Del Mid</button>
+        <button type="button" onclick="DelEnd()">Del End</button>
+    </p>
+    <p>
+        <button type="button" onclick="Clear()">Clear</button>
+    </p>
+
+    <p>
+        <button type="button" onclick="Save()">Save</button>
+        <button type="button" onclick="Load()">Load</button>
+    </p>
+</body>
+</html>

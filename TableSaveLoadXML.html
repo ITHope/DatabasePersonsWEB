@@ -1,0 +1,177 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script>    
+      var table;
+      window.onload = function(){
+        table = document.getElementById('myTable');
+      }
+      function addStart(){
+        
+		var okRow = table.insertRow(0);
+	    okRow.innerHTML = '<tr> <td width="25%">'+txtId.value+'</td> <td width="25%">'+txtFN.value+'</td> <td width="25%">'+txtLN.value+'</td> <td width="25%">'+txtAge.value+'</td></tr>';				
+      }
+	  
+	  function addMid(){
+	  var okRow = table.insertRow(table.rows.length/2);
+	  okRow.innerHTML = '<tr> <td width="25%">'+txtId.value+'</td> <td width="25%">'+txtFN.value+'</td> <td width="25%">'+txtLN.value+'</td> <td width="25%">'+txtAge.value+'</td></tr>';		
+      }
+	  
+      function addEnd(){
+        var okRow = table.insertRow(length-1);
+	    okRow.innerHTML = '<tr> <td width="25%">'+txtId.value+'</td> <td width="25%">'+txtFN.value+'</td> <td width="25%">'+txtLN.value+'</td> <td width="25%">'+txtAge.value+'</td></tr>';			
+      }	  
+	  
+	  
+	function deleteLastRow()
+	{
+		if (table.rows.length > 0) table.deleteRow(table.rows.length - 1);
+	}
+	function deleteFirstRow()
+	{
+		if (table.rows.length > 0) table.deleteRow(0);
+	}
+	function deleteMidRow()
+	{
+		if (table.rows.length > 0) table.deleteRow(table.rows.length/2);
+	}	
+	
+	function Clear()
+	{	
+		 table.innerHTML = "";				
+	}
+	
+	function SaveXML()
+  {      
+    var xmlString = '<Persons>';
+    
+    for (var i = 0; i < table.rows.length; i++)
+    {
+      	xmlString += "<Person>";
+	    if ( table.rows[i].cells[0] )
+	    {
+	      xmlString += "<Id>"+table.rows[i].cells[0].textContent+"</Id>";
+	    }
+	    if ( table.rows[i].cells[1] )
+	    {
+	      xmlString += "<FirstName>"+table.rows[i].cells[1].textContent+"</FirstName>";
+	    }
+	    if ( table.rows[i].cells[2] )
+	    {
+	      xmlString += "<LastName>"+table.rows[i].cells[2].textContent+"</LastName>";
+	    }
+	    if ( table.rows[i].cells[3] )
+	    {
+	      xmlString += "<Age>" + table.rows[i].cells[3].textContent+ "</Age>";
+	    }
+      	xmlString += "</Person>";
+    }
+    xmlString += "</Persons>";
+    localStorage.setItem("personXML", xmlString);      
+    console.log(xmlString);
+  }
+
+
+
+	function LoadXML()
+	{
+		var xmlText = localStorage.getItem("personXML");
+		var xsltText =
+		'<xsl:stylesheet ' +
+		      'version="1.0" ' +
+		      'xmlns:xsl="http://www.w3.org/1999/XSL/Transform" ' +
+		      'xmlns="http://www.w3.org/TR/xhtml1/strict"> ' +
+            '<xsl:template match="/"> ' +
+            '<table  width="100%" border="1" cellpadding="4" cellspacing="0"> ' +
+            '<thead> ' +
+            '<tr>' +
+                '<th width="25%">Id</th>' +
+                '<th width="25%">First Name </th>' +
+                '<th width="25%">Last Name </th>' +
+                '<th width="25%">Age</th>' +
+            '</tr>' +
+	        '</thead >' +
+            '<tbody id="myTable"> ' +
+	        '<xsl:for-each select="Persons/Person"> ' +
+	          '<tr> ' +
+	            '<td> <xsl:value-of select="Id"/> </td> ' +
+	            '<td> <xsl:value-of select="FirstName"/> </td> ' +
+	            '<td> <xsl:value-of select="LastName"/> </td> ' +
+	            '<td> <xsl:value-of select="Age"/> </td> ' +
+	          '</tr> ' +
+                '</xsl:for-each>  ' +
+            '</tbody>' +
+        '</table> ' +
+		  '</xsl:template> ' +
+            '</xsl:stylesheet> ';
+        //var docType = document.implementation.createDocumentType("person", "SYSTEM", "<!ENTITY tf 'person'>");
+        var xmlDoc = new DOMParser().parseFromString(xmlText, "text/xml");
+        var xslDoc = new DOMParser().parseFromString(xsltText, "text/xml");
+      //  debugger;
+        if (window.ActiveXObject ) {
+            var ex = xmlDoc.transformNode(xslDoc);
+            document.getElementById("tableDiv").innerHTML = ex;
+        }
+        // code for Chrome, Firefox, Opera, etc.
+        else if (document.implementation && document.implementation.createDocument) {
+            var xsltProcessor = new XSLTProcessor();
+            xsltProcessor.importStylesheet(xslDoc);
+            resultDocument = xsltProcessor.transformToFragment(xmlDoc, document);
+            document.getElementById("tableDiv").innerHTML = "";
+            document.getElementById("tableDiv").appendChild(resultDocument);
+        }
+        //xmlDoc.loadXML(xmlText);
+        table = document.getElementById('myTable');        
+
+	//	document.getElementById("XMLResult").innerHTML = xmlText;
+	}
+		
+	Storage.prototype.setObj = function(key, obj) {
+    return this.setItem(key, JSON.stringify(obj))
+	}
+	Storage.prototype.getObj = function(key) {
+		return JSON.parse(this.getItem(key))
+	}
+
+	
+</script>
+
+</head>
+<body>	
+	<input id = "txtId"> </input> 
+	<input id = "txtFN"> </input> 
+	<input id = "txtLN"> </input> 
+	<input id = "txtAge"> </input> <br><br>
+	
+    <button id="addStart" type="button" onclick="addStart()">Add to start</button>
+	<button id="addMid" type="button" onclick="addMid()">Add to mid</button>
+    <button id="addEnd" type="button" onclick="addEnd()">Add to end</button>
+    
+	<button id="delStart" type="button" onclick="deleteFirstRow()">Del start</button>
+	<button id="delMid" type="button" onclick="deleteMidRow()">Del mid</button>
+	<button id="delEnd" type="button" onclick="deleteLastRow()">Del end</button>
+
+	<button id="clr" type="button" onclick="Clear()">Clear</button>
+	<button id="btnSave" type="button" onclick="SaveXML()">Save</button>
+	<button id="btnLoad" type="button" onclick="LoadXML()">Load</button>
+    <br><br>
+    <div id="tableDiv">
+        <table width="100%" border="1" cellpadding="4" cellspacing="0">
+            <thead>
+                <tr>
+                    <th width="25%">Id</th>
+                    <th width="25%">First Name </th>
+                    <th width="25%">Last Name </th>
+                    <th width="25%">Age</th>
+                </tr>
+            </thead>
+            <tbody id="myTable"></tbody>
+
+        </table>
+    </div>
+	
+	
+</body>
+</html>
