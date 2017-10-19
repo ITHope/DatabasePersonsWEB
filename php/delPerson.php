@@ -1,24 +1,20 @@
 <?php
 require_once 'rb.php';
 
-$id = substr(htmlspecialchars(trim($_GET['fn'])), 0, 1000);
-
+$id = $_GET['id']+0;
 
 try {
-    $path  = getcwd() . '..\db\database.db';
+    R::setup('mysql:host=localhost;
+        dbname=persons','root','');
 
-    echo $path;
-    if(file_exists($path)) {
-        echo "<h1>Exists $path</h1>";
-    }
+    R::setAutoResolve(TRUE);
 
-    R::setup("sqlite:$path");
+    $post = R::load('persons', $id);
+    echo $post;
 
-    R::setAutoResolve(TRUE);        //Recommended as of version 4.2
+    R::trash($post);
 
-    $pers = R::load('persons', $id);
-
-    R::trash( $pers );
+    return $post;
 }
 
 catch(Exception $ex) {
