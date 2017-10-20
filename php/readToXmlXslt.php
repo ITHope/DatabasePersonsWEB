@@ -24,15 +24,6 @@ try {
     }
     $xml->endElement();
 
-    /*
-     * $xml will look like
-     * <array>
-     *      <key1>value1</key1>
-     *      <key2>value2</key2>
-     *      <key3>value3</key3>
-     * </array>
-     */
-
 // convert XMLWriter document into a DOM representation (can be skipped if XML is created with ext/DOM)
     $doc = DOMDocument::loadXML($xml->outputMemory());
 

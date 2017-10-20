@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<dataSource name="persons@localhost">
-  <database-model serializer="dbm" rdbms="MYSQL" format-version="4.2">
+<dataSource name="persons">
+  <database-model serializer="dbm" rdbms="MYSQL" format-version="4.4">
     <root id="1"/>
     <schema id="2" parent="1" name="persons">
       <Current>1</Current>

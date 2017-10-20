@@ -7,7 +7,7 @@
       <auth-required>false</auth-required>
       <introspection-schemas>*:main</introspection-schemas>
     </data-source>
-    <data-source name="persons@localhost" uuid="ac732b19-7e30-40d0-8ae1-8bc02b501773">
+    <data-source name="persons" uuid="ac732b19-7e30-40d0-8ae1-8bc02b501773">
       <database-info product="MySQL" version="5.5.5-10.1.26-MariaDB" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.40 ( Revision: 402933ef52cad9aa82624e80acbea46e3a701ce6 )">
         <extra-name-characters>#@</extra-name-characters>
         <identifier-quote-string>`</identifier-quote-string>

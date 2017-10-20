@@ -12,6 +12,7 @@ try {
 
     R::setAutoResolve(TRUE);
 
+    // Using Beans
     $post = R::load('persons', $id);
     echo $post;
     $post->Id = $id;
@@ -19,7 +20,8 @@ try {
     $post->Ln = $ln;
     $post->Age = $age;
 
-    R::exec( 'UPDATE persons SET Fn=$fn WHERE id = 1' );
+    // Using Query
+    R::exec( "UPDATE persons SET Fn='$fn', Ln='$ln', Age='$age' WHERE Id = $id" );
 
     //R::store($post);
 
