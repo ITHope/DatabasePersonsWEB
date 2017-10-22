@@ -1,3 +1,40 @@
+<?php namespace RedBeanPHP; ?>
+<?php include("php/Person.php"); ?>
+
+
+
+<?php
+
+$id = 0;
+$fn = "";
+$ln = "";
+$age = 0;
+
+switch($_SERVER['REQUEST_METHOD']) {
+    case 'GET':
+        $the_request = &$_GET;
+        break;
+    case 'POST':
+        $the_request = &$_POST;
+        break;
+}
+
+if (isset($the_request['id'])) {
+    $id = $the_request['id'] + 0;
+}
+if (isset($the_request['fn'])) {
+    $id = $the_request['fn'];
+}
+if (isset($the_request['ln'])) {
+    $id = $the_request['ln'];
+}
+if (isset($the_request['age'])) {
+    $id = $the_request['age'] + 0;
+}
+
+$persons_arr = array();
+?>
+
 <script>
 
     var persons = [];
@@ -39,10 +76,18 @@
 
         persons.push(getPerson());
 
+
         var id = document.getElementById('id').value;
         var fn = document.getElementById('fn').value;
         var ln = document.getElementById('ln').value;
         var age = document.getElementById('age').value;
+
+        <?php
+
+        $pers = new Person($id, $fn, $ln, $age);
+        array_push($persons_arr, $pers);
+
+        ?>
 
         var ajaxRequest = getXmlHttp();
         var req = "id="+id+"&fn="+fn+"&ln="+ln+"&age="+age;
@@ -57,6 +102,22 @@
         persons.pop();
 
         var id = document.getElementById('id').value;
+
+
+        <?php
+
+        $item = null;
+        foreach($persons_arr as $struct) {
+            if ($id == $struct->id) {
+                $item = $struct;
+                break;
+            }
+        }
+
+        $index = array_search($item, $persons_arr);
+        unset( $persons_arr[$index] );
+
+        ?>
 
         var xmlhttp = getXmlHttp()
         var req = "id="+id;
@@ -75,6 +136,29 @@
         var ln = document.getElementById('ln').value;
         var age = document.getElementById('age').value;
 
+        <?php
+
+        $item = null;
+        foreach($persons_arr as $struct) {
+            if ($id == $struct->id) {
+                $item = $struct;
+                break;
+            }
+        }
+
+        $index = array_search($item, $persons_arr);
+        if (isset($the_request['fn'])) {
+            $persons_arr[$index]->fn = $fn;
+        }
+        if (isset($the_request['ln'])) {
+            $persons_arr[$index]->ln = $fn;
+        }
+        if (isset($the_request['age'])) {
+            $persons_arr[$index]->age = $fn;
+        }
+
+        ?>
+
         var xmlhttp = getXmlHttp()
         var req = "id="+id+"&fn="+fn+"&ln="+ln+"&age="+age;
         xmlhttp.open('GET', 'php/updPerson.php?'+req, false);
@@ -88,8 +172,24 @@
 
 
 	function ShowPersons() {
+
+
         var tableRef = document.getElementById('persons').getElementsByTagName('tbody')[0];
         tableRef.innerHTML = "";
+
+
+        <?php
+
+
+        foreach($persons_arr as $struct) {
+            echo $struct;
+        }
+
+        $parser = ParserFactory::GetParser( "HTML" );
+        $parser->Parse();
+
+        ?>
+
 
         persons.forEach(function(item) {
             var tableRef = document.getElementById('persons').getElementsByTagName('tbody')[0];
@@ -113,7 +213,8 @@
         div.className = 'row';
 
         var xmlhttp = getXmlHttp()
-        xmlhttp.open('GET', 'php/readTable.php?', false);
+        var req = "format=HTML";
+        xmlhttp.open('GET', 'php/Parser_Bridge.php?'+req, false);
         xmlhttp.send(null);
         if(xmlhttp.status == 200) {
             var result = xmlhttp.responseText;
@@ -125,11 +226,22 @@
 	}
 
     function ShowPersonsXML() {
+
+        <?php
+
+
+        foreach($persons_arr as $struct) {
+            echo $struct;
+        }
+        ?>
+
+
         var div = document.createElement('div');
         div.className = 'row';
 
-        var xmlhttp = getXmlHttp()
-        xmlhttp.open('GET', 'php/readToXml.php?', false);
+        var xmlhttp = getXmlHttp();
+        var req = "format=XML";
+        xmlhttp.open('GET', 'php/Parser_Bridge.php?'+req, false);
         xmlhttp.send(null);
         if(xmlhttp.status == 200) {
             var result = xmlhttp.responseText;
@@ -141,11 +253,25 @@
     }
 
     function ShowPersonsXMLXSLT() {
+
+        <?php
+
+
+        foreach($persons_arr as $struct) {
+            echo $struct;
+        }
+
+        $parser = ParserFactory::GetParser( "XSLT" );
+        $parser->Parse();
+
+        ?>
+
         var div = document.createElement('div');
         div.className = 'row';
 
         var xmlhttp = getXmlHttp()
-        xmlhttp.open('GET', 'php/readToXmlXslt.php?', false);
+        var req = "format=XSLT";
+        xmlhttp.open('GET', 'php/Parser_Bridge.php?'+req, false);
         xmlhttp.send(null);
         if(xmlhttp.status == 200) {
             var result = xmlhttp.responseText;
@@ -158,6 +284,19 @@
 
     function ShowPersonsJSON() {
 
+        <?php
+
+
+        foreach($persons_arr as $struct) {
+            echo $struct;
+        }
+
+        $parser = ParserFactory::GetParser( "JSON" );
+        $parser->Parse();
+
+        ?>
+
+
         localStorage.setItem("persons", JSON.stringify(persons));
         persons = JSON.parse(localStorage.getItem("persons"));
 
@@ -165,7 +304,8 @@
         div.className = 'row';
 
         var xmlhttp = getXmlHttp()
-        xmlhttp.open('GET', 'php/readToJson.php?', false);
+        var req = "format=JSON";
+        xmlhttp.open('GET', 'php/Parser_Bridge.php?'+req, false);
         xmlhttp.send(null);
         if(xmlhttp.status == 200) {
             //var result = JSON.parse(xmlhttp.responseText);
@@ -177,18 +317,21 @@
 </script>
 
 
+<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
 
-Id: <input type="text" id="id"><br>
-Fn: <input type="text" id="fn"><br>
-Ln: <input type="text" id="ln"><br>
-Age: <input type="text" id="age"><br>
-<button type="button" onclick="addPerson()">Add</button>
-<button type="button" onclick="delPerson()">Delete</button>
-<button type="button" onclick="updPerson()">Update</button><br/>
-<button type="button" onclick="ShowPersons()">Read to HTML</button>
-<button type="button" onclick="ShowPersonsXML()">Read to XML</button>
-<button type="button" onclick="ShowPersonsJSON()">Read to JSON</button>
-<button type="button" onclick="ShowPersonsXMLXSLT()">Read to XML XSLT</button><br/><br/>
+Id: <input type="text" id="id" name="id" value = "<?php echo $id; ?>"><br>
+Fn: <input type="text" id="fn" name="fn" value = "<?php echo $fn; ?>"><br>
+Ln: <input type="text" id="ln" name="ln"value = "<?php echo $ln; ?>"><br>
+Age: <input type="text" id="age" name="age"value = "<?php echo $age; ?>"><br>
+<button type="submit" onclick="addPerson()">Add</button>
+<button type="submit" onclick="delPerson()">Delete</button>
+<button type="submit" onclick="updPerson()">Update</button><br/>
+<button type="submit" onclick="ShowPersons()">Read to HTML</button>
+<button type="submit" onclick="ShowPersonsXML()">Read to XML</button>
+<button type="submit" onclick="ShowPersonsJSON()">Read to JSON</button>
+<button type="submit" onclick="ShowPersonsXMLXSLT()">Read to XML XSLT</button><br/><br/>
+
+</form>
 
 <div id="content">
 

@@ -1,0 +1,59 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Home
+ * Date: 22.10.2017
+ * Time: 23:28
+ */
+
+namespace RedBeanPHP;
+require_once 'rb.php';
+
+class XSLT_Parser extends Parser
+{
+    public function Parse()
+    {
+        try {
+            R::setup('mysql:host=localhost;
+        dbname=persons','root','');
+
+            R::setAutoResolve(TRUE);
+
+            $rows = R::getAll( 'select * from persons' );
+
+
+            $xml = new XMLWriter();
+            $xml->openMemory();
+            $xml->startDocument('1.0', 'UTF-8');
+            $xml->startElement('rows');
+
+
+// simple one-dimensional array-traversal - depending on your array structure this can be much more complicated (e.g. recursion)
+            foreach ($rows[0] as $key => $value) {
+
+                $xml->writeElement($key, $value);
+            }
+            $xml->endElement();
+
+// convert XMLWriter document into a DOM representation (can be skipped if XML is created with ext/DOM)
+            $doc = DOMDocument::loadXML($xml->outputMemory());
+
+// Load XSL stylesheet
+            $xml_file = $xml->asXML('stylesheet.xsl');
+            $xsl = DOMDocument::load('stylesheet.xsl');
+
+// Fire-up XSLT processor
+            $proc = new XSLTProcessor();
+            $proc->importStyleSheet($xsl);
+
+// Output transformation
+            echo $doc->transformToXML($xml);
+
+            return $doc;
+        }
+
+        catch(Exception $ex) {
+            echo $ex->getMessage();
+        }
+    }
+}
