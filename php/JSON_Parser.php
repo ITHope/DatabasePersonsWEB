@@ -6,7 +6,7 @@
  * Time: 23:25
  */
 
-namespace RedBeanPHP;
+namespace DBPersonPHP;
 require_once 'rb.php';
 
 class JSON_Parser extends Parser

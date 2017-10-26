@@ -1,7 +1,7 @@
 <?php
 
-namespace RedBeanPHP;
-
+namespace DBPersonPHP;
+require_once('classes.php');
 
 $format = 0;
 
@@ -18,6 +18,6 @@ switch($_SERVER['REQUEST_METHOD']) {
 if (isset($the_request['format'])) {
     $format = $the_request['format'];
 }
-
-$parser = ParserFactory::GetParser( $format );
-$parser->Parse();
+var_dump(file_exists("/ParserFactory.php"));
+$parse = ParserFactory::getParser( $format );
+$parse->Parse();

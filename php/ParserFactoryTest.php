@@ -1,15 +1,9 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Home
- * Date: 23.10.2017
- * Time: 1:31
- */
 
-namespace RedBeanPHP;
+namespace DBPersonPHP;
 
 
-class ParserFactoryTest extends \PHPUnit_Framework_TestCase
+class ParserFactoryTest extends TestCase
 {
     public function testPushAndPop(): void
     {

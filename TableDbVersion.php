@@ -1,4 +1,4 @@
-<?php namespace RedBeanPHP; ?>
+<?php namespace DBPersonPHP; ?>
 <?php include("php/Person.php"); ?>
 
 
@@ -147,6 +147,10 @@ $persons_arr = array();
         }
 
         $index = array_search($item, $persons_arr);
+        //if ($index == 0)
+        {
+            $persons_arr[$index] = new Person();
+        }
         if (isset($the_request['fn'])) {
             $persons_arr[$index]->fn = $fn;
         }
@@ -159,7 +163,7 @@ $persons_arr = array();
 
         ?>
 
-        var xmlhttp = getXmlHttp()
+        var xmlhttp = getXmlHttp();
         var req = "id="+id+"&fn="+fn+"&ln="+ln+"&age="+age;
         xmlhttp.open('GET', 'php/updPerson.php?'+req, false);
         xmlhttp.send(null);
@@ -182,11 +186,12 @@ $persons_arr = array();
 
 
         foreach($persons_arr as $struct) {
-            echo $struct;
+            //echo $struct;
+            //print_r($struct);
         }
 
-        $parser = ParserFactory::GetParser( "HTML" );
-        $parser->Parse();
+        //$parser = ParserFactory::GetParser( "HTML" );
+        //$parser->Parse();
 
         ?>
 
@@ -214,7 +219,7 @@ $persons_arr = array();
 
         var xmlhttp = getXmlHttp()
         var req = "format=HTML";
-        xmlhttp.open('GET', 'php/Parser_Bridge.php?'+req, false);
+        xmlhttp.open('GET', 'php/Parsers_Bridge.php?'+req, false);
         xmlhttp.send(null);
         if(xmlhttp.status == 200) {
             var result = xmlhttp.responseText;
@@ -231,7 +236,7 @@ $persons_arr = array();
 
 
         foreach($persons_arr as $struct) {
-            echo $struct;
+            //echo $struct;
         }
         ?>
 
@@ -241,7 +246,7 @@ $persons_arr = array();
 
         var xmlhttp = getXmlHttp();
         var req = "format=XML";
-        xmlhttp.open('GET', 'php/Parser_Bridge.php?'+req, false);
+        xmlhttp.open('GET', 'php/Parsers_Bridge.php?'+req, false);
         xmlhttp.send(null);
         if(xmlhttp.status == 200) {
             var result = xmlhttp.responseText;
@@ -258,11 +263,11 @@ $persons_arr = array();
 
 
         foreach($persons_arr as $struct) {
-            echo $struct;
+            //echo $struct;
         }
 
-        $parser = ParserFactory::GetParser( "XSLT" );
-        $parser->Parse();
+        //$parser = ParserFactory::GetParser( "XSLT" );
+        //$parser->Parse();
 
         ?>
 
@@ -271,7 +276,7 @@ $persons_arr = array();
 
         var xmlhttp = getXmlHttp()
         var req = "format=XSLT";
-        xmlhttp.open('GET', 'php/Parser_Bridge.php?'+req, false);
+        xmlhttp.open('GET', 'php/Parsers_Bridge.php?'+req, false);
         xmlhttp.send(null);
         if(xmlhttp.status == 200) {
             var result = xmlhttp.responseText;
@@ -288,11 +293,11 @@ $persons_arr = array();
 
 
         foreach($persons_arr as $struct) {
-            echo $struct;
+            //echo $struct;
         }
 
-        $parser = ParserFactory::GetParser( "JSON" );
-        $parser->Parse();
+        //$parser = ParserFactory::GetParser( "JSON" );
+        //$parser->Parse();
 
         ?>
 
@@ -305,7 +310,7 @@ $persons_arr = array();
 
         var xmlhttp = getXmlHttp()
         var req = "format=JSON";
-        xmlhttp.open('GET', 'php/Parser_Bridge.php?'+req, false);
+        xmlhttp.open('GET', 'php/Parsers_Bridge.php?'+req, false);
         xmlhttp.send(null);
         if(xmlhttp.status == 200) {
             //var result = JSON.parse(xmlhttp.responseText);

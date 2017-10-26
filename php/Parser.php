@@ -6,7 +6,7 @@
  * Time: 23:22
  */
 
-namespace RedBeanPHP;
+namespace DBPersonPHP;
 require_once 'rb.php';
 
 abstract class Parser {

@@ -6,7 +6,7 @@
  * Time: 23:26
  */
 
-namespace RedBeanPHP;
+namespace DBPersonPHP;
 require_once 'rb.php';
 
 class XML_Parser extends Parser

@@ -6,7 +6,7 @@
  * Time: 23:28
  */
 
-namespace RedBeanPHP;
+namespace DBPersonPHP;
 require_once 'rb.php';
 
 class XSLT_Parser extends Parser

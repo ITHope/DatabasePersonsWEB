@@ -6,7 +6,7 @@
  * Time: 23:23
  */
 
-namespace RedBeanPHP;
+namespace DBPersonPHP;
 require_once 'rb.php';
 
 class HTML_Parser extends Parser

@@ -6,7 +6,7 @@
  * Time: 23:35
  */
 
-namespace RedBeanPHP;
+namespace DBPersonPHP;
 
 
 class Person
